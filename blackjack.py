@@ -3,12 +3,21 @@
 ##############
 
 # To Do:
-# - Add dealer logic for multiple hits depending on score
+# - add dealer logic for multiple hits depending on score
+# - add blackjack logic 
+# - add soft 17 logic
+# - add betting logic
+# - add multiple players
+# - add split logic
+# - add double down logic
+# - add insurance logic
+# - add surrender logic
 
 #############
 # Libraries #
 #############
 import random
+import time
 
 #############
 # Variables #
@@ -34,7 +43,7 @@ def new_deck():
 
 # start a new deck        
 new_deck()
-print('Let\'s play Blackjack!')
+print('Let\'s play Blackjack! \n')
 # print('Base deck \n', deck, '\nTotal cards:', len(deck))
 
 # shuffle the deck
@@ -92,23 +101,37 @@ show_cards(player1)
 # Ask player if they want a card
 flag_hit = True
 while flag_hit == True:
-    hit_input = input('Would you like a card? (y/n)')
+    hit_input = input('Would you like a card? (y/n) \n')
     if hit_input == 'y':
-        print('player hits!')
+        print('\nPlayer hits!')
+        time.sleep(1)
         deal_card(1, player1)
+        print('Player receives:', player1['cards'][-1])
         show_cards(player1)
         if calc_score(player1) > 21:
-            print(f'Player busts with a score of {player1['score']}!')
+            print(f'\nPlayer busts with a score of {player1['score']}!')
             flag_hit = False
         else:
             continue
     else:
-        print('player stands!')
-        show_cards('all')
+        print('\nPlayer stands!')
+        time.sleep(1)
+        # Show dealer's cards
+        print('\nDealer flips their card and shows:', {dealer['cards'][1]}, ' with a score of:', calc_score(dealer))
+        # Dealer play their hand
+        while calc_score(dealer) < 17:
+            time.sleep(1)
+            print('\nDealer hits!')
+            time.sleep(1)
+            deal_card(1, dealer)
+            show_cards(dealer)
+            if calc_score(dealer) > 21:
+                print(f'\nDealer busts with a score of {dealer['score']}!')
+                break
         if player1['score'] > dealer['score']:
-            print('Player wins!')
+            print('\nPlayer wins!')
         elif player1['score'] == dealer['score']:
-            print('Push!')
+            print('\nPush!')
         else:
-            print('Dealer wins!')
+            print('\nDealer wins!')
         flag_hit = False
