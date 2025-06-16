@@ -12,6 +12,7 @@
 # - add double down logic
 # - add insurance logic
 # - add surrender logic
+# - clean up card formatting
 
 #############
 # Libraries #
@@ -43,12 +44,10 @@ def new_deck():
 
 # start a new deck        
 new_deck()
-print('Let\'s play Blackjack! \n')
-# print('Base deck \n', deck, '\nTotal cards:', len(deck))
+print('Let\'s play Blackjack!\n')
 
 # shuffle the deck
 random.shuffle(deck)
-# print('Shuffled deck \n', deck, '\nTotal cards:', len(deck))
 
 # deal a card
 # variables indicate how many cards to deal and who to deal to
@@ -62,10 +61,6 @@ def deal_card(num_cards: int, deal_to: str):
 
 deal_card(2, player1)
 deal_card(2, dealer)
-# print('Deck after dealing a card \n', deck, '\nTotal cards:', len(deck))
-
-# for i in players:
-#     print(f'{i['name']} cards:', i['cards'], 'total cards:', len(i['cards']))
 
 # calculate score
 def calc_score(player: str):
@@ -101,23 +96,23 @@ show_cards(player1)
 # Ask player if they want a card
 flag_hit = True
 while flag_hit == True:
-    hit_input = input('Would you like a card? (y/n) \n')
+    hit_input = input('Would you like a card? (y/n)\n')
     if hit_input == 'y':
-        print('\nPlayer hits!')
+        print('Player hits!\n')
         time.sleep(1)
         deal_card(1, player1)
         print('Player receives:', player1['cards'][-1])
         show_cards(player1)
         if calc_score(player1) > 21:
-            print(f'\nPlayer busts with a score of {player1['score']}!')
+            print(f'Player busts with a score of {player1['score']}!\n')
             flag_hit = False
         else:
             continue
     else:
-        print('\nPlayer stands!')
+        print('Player stands!')
         time.sleep(1)
         # Show dealer's cards
-        print('\nDealer flips their card and shows:', {dealer['cards'][1]}, ' with a score of:', calc_score(dealer))
+        print('Dealer flips their card and shows:', {dealer['cards'][1]}, ' with a score of:', calc_score(dealer),'\n')
         # Dealer play their hand
         while calc_score(dealer) < 17:
             time.sleep(1)
@@ -126,12 +121,15 @@ while flag_hit == True:
             deal_card(1, dealer)
             show_cards(dealer)
             if calc_score(dealer) > 21:
-                print(f'\nDealer busts with a score of {dealer['score']}!')
+                print(f'Dealer busts with a score of {dealer['score']}!\n')
+                flag_hit = False
                 break
         if player1['score'] > dealer['score']:
-            print('\nPlayer wins!')
+            print(f'Player wins! (Dealer: {dealer['score']} vs. Player: {player1['score']})\n')
         elif player1['score'] == dealer['score']:
-            print('\nPush!')
+            print('Push!\n')
+        elif dealer['score'] > 21:
+            print(f'Player wins! (Dealer: {dealer['score']} vs. Player: {player1['score']})\n')
         else:
-            print('\nDealer wins!')
+            print(f'Dealer wins! (Dealer: {dealer['score']} vs. Player: {player1['score']})\n')
         flag_hit = False
